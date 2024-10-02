@@ -1,36 +1,13 @@
 
 ## Task 1 - Configure and Document the Repository
+
 Recommended additions to the project to achieve production-readiness:
 
-- [x] **Version Control Support**
-	- [x] Git tracking
-	- [x] Add a `.gitignore` file to exclude `dist/`, `node_modules/`, etc., from being checked in.
-
-- [ ] **Environment Configuration Support**
-	- [ ] Add a `.env` file to contain:
-		- Backend API and third-party service URLs
-		- Environment modes (development, test, production)
-		- Database configurations (host, port, username, password)
-		- Application secret keys (JWT secret, OAuth keys)
-		- Feature flag configurations
-
-- [ ] **Build Process**
-	- [x] Set up `tsc` for TypeScript transpiling
-	- [ ] Add `webpack` for:
-		- Code splitting
-		- Minification
-		- Module bundling
-		- Hot reloading
-
-- [ ] **Code Formatting**
-	- [ ] Add `prettier` to enforce code formatting standards, to be run on commit hooks using tools like `husky` and `lint-staged` before a remote push.
-
-- [ ] **Testing**
-	- [ ] Add unit tests for existing, uncovered functions
-	- [ ] Add automated integration testing
-
-- [ ] **Deployment**
-	- [ ] CI/CD Pipelines: Outline integration with services like GitHub Actions, CircleCI, or Jenkins for automated testing and deployment.
-
-- [ ] **Monitoring and Analytics**
-	- [ ] Add logging and monitoring options (e.g., Sentry for error tracking or DataDog for performance monitoring) to track errors and performance in production.
+| Item                               	| Status      	| Context                                                                                                                                                                                                                                                                                                      	| Decision                                                                                                                                                                       	| Consequences                                                                                                                                                                                                                                                                                                        	|
+|------------------------------------	|-------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| Version Control Support            	| Implemented 	| Without version control, changes must be manually tracked, which increases complexity and risks errors. It’s also difficult to see what has been changed from version to version, and collaboration with other team members is cumbersome. 	| Add `git` for version control, among any other version control solutions, as it is popular and most developers are familiar with it. There should not be any ramp-up time.   	| Changes can be tracked, documented, and rolled back, allowing other team members to easily collaborate on the project. It is virtually impossible to have a modern software development team without version control.                                                                                               	|
+| Environment Configuration Support 	| Proposed    	| There is no way in code to distinguish between different runtime environments when it comes to referencing backend and 3rd party URLs, system/database configurations, app keys, and feature flags.                                                                                                                 	| Add `.env` for environment-specific configurations, using the `dotenv` library for loading values. In production, sensitive information should be managed with a secret management tool.                                                                                                                	| Can easily read configurations based on a specified environment at runtime. This will save significant time by avoiding the need to make code changes for local vs production, for example.                                                                                                                       	|
+| Build Process                      	| Proposed    	| Currently, there is no method for splitting the code into bundles. Additionally, development time is wasted by having to stop, rebuild, and run the project to pick up changes.                                                                                                                              	| Add `Webpack` to enable module bundling and hot module reloading. Webpack is chosen for its widespread use and ecosystem, providing robust features like tree shaking and code splitting.                                                                                                                                                                  	| There will be a measurable performance increase with code/module splitting, as well as development time saved with hot module reloading.                                                                                                                                                                            	|
+| Code Formatting                    	| Proposed    	| Code standards are currently not enforced.                                                                                                                                                                                                                                                                   	| Add `Prettier`.                                                                                                                                                                 	| Once an agreement is made on formatting standards, developers can write code in the style that is most comfortable for them and let the formatter clean up before commit. This ensures code consistency across the team, minimizing unnecessary formatting changes in code reviews and improving collaboration.  	 |
+| Testing                            	| Proposed    	| There is no method for catching bugs without manual review.                                                                                                                                                                                                                                                	| Add unit test coverage.                                                                                                                                                         	| Bugs can be detected if a function's contract changes. While end-to-end testing is unnecessary for the current UI, integration and e2e testing should be considered as the project grows to ensure robustness across the full application.                                                                                                                                 	|
+| Deployment                         	| Proposed    	| Deployments are manual and there is no guarantee that the proposed unit test suite is successfully run before deployment.                                                                                                                                                                                   	| Add a CI/CD pipeline using GitHub Actions to automate tests, ensure smooth releases, and catch bugs earlier in the development cycle.                                                                                                                                          	| Deployments can be automated, saving significant engineering time and ensuring code quality by enforcing test runs in the build process.                                                                                                                                                                           	|
